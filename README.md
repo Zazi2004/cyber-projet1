@@ -26,7 +26,8 @@ INFO: You can access the web interface https://<WAZUH_DASHBOARD_IP_ADDRESS>
     Password: <ADMIN_PASSWORD>  
 INFO: Installation finished.  
 "  
-L'interface est accessible avec le lien et les credentials mentionnés dans INFO (URL à la place de <WAZUH_DASHBOARD_IP_ADDRESS> et mot de passe à la place de <ADMIN_PASSWORD>
+L'interface est accessible en se connectant au port ouvert (généralement 443) de l'adresse IP de la machine.  
+Username : admin, et Password renseigné à la place de <ADMIN_PASSWORD>
 
 ## Installer Elasticsearch
 
