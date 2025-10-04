@@ -2,18 +2,15 @@
 Système de détection d'anomalies et de gestion de logs pour la sécurité des réseaux
 
 
-
-Première étape installation de syslog-ng sur la machine 
+## 1 - installation de syslog-ng sur la machine 
 
 sudo apt install -y syslog-ng
 syslog-ng --version
 
+## 2 - Installer Elasticsearch
 
 sudo apt update
 sudo apt install -y openjdk-21-jdk
-
-
-Installer Elasticsearch
 
 wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg
 
