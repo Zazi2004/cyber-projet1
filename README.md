@@ -26,8 +26,35 @@ INFO: You can access the web interface https://<WAZUH_DASHBOARD_IP_ADDRESS>
     Password: <ADMIN_PASSWORD>  
 INFO: Installation finished.  
 "  
-L'interface est accessible en se connectant au port ouvert (généralement 443) de l'adresse IP de la machine.  
+L'interface est accessible en se connectant au port ouvert (généralement 443) de de la machine => https://localhost:443/  
+Un message d'alerte s'affiche avant d'accéder à la page => Advanced => Take the risk
 Username : admin, et Password renseigné à la place de <ADMIN_PASSWORD>
+
+## Déployer l'agent Wazuh
+
+Les commandes devront être exécutées en tant que root
+sudo su
+
+Installation de la clé GPG  
+curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import && chmod 644 /usr/share/keyrings/wazuh.gpg  
+  
+Ajout et mise à jour du repo  
+echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | tee -a /etc/apt/sources.list.d/wazuh.list  
+apt-get update  
+
+apt-get install wazuh-agent  
+  
+Si le processus est arrêté pour une erreur (1) :  
+mv /var/ossec/etc/shared/default /var/ossec/etc/shared/default_backup  
+sudo dpkg --configure -a  
+apt-get install -f  
+apt-get install wazuh-agent  
+WAZUH_MANAGER="10.0.0.2" apt-get install wazuh-agent  
+  
+Lancer le service :  
+systemctl daemon-reload
+systemctl enable wazuh-agent
+systemctl start wazuh-agent
 
 ## Installer Elasticsearch
 
