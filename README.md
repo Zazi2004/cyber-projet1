@@ -16,16 +16,16 @@ syslog-ng --version
 
 ## Installer Wazuh
 
-curl -sO https://packages.wazuh.com/4.13/wazuh-install.sh && sudo bash ./wazuh-install.sh -a
+curl -sO https://packages.wazuh.com/4.13/wazuh-install.sh && sudo bash ./wazuh-install.sh -a  
 
-Message d'infos :
+Message d'infos :  
 "
-INFO: --- Summary ---
-INFO: You can access the web interface https://<WAZUH_DASHBOARD_IP_ADDRESS>
-    User: admin
-    Password: <ADMIN_PASSWORD>
-INFO: Installation finished.
-"
+INFO: --- Summary ---  
+INFO: You can access the web interface https://<WAZUH_DASHBOARD_IP_ADDRESS>  
+    User: admin  
+    Password: <ADMIN_PASSWORD>  
+INFO: Installation finished.  
+"  
 L'interface est accessible avec le lien et les credentials mentionnés dans INFO (URL à la place de <WAZUH_DASHBOARD_IP_ADDRESS> et mot de passe à la place de <ADMIN_PASSWORD>
 
 ## Installer Elasticsearch
