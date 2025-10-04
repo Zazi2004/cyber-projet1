@@ -5,25 +5,40 @@ Système de détection d'anomalies et de gestion de logs pour la sécurité des 
 
 Une machine virtuelle Kali
 
-## 1 - installation de syslog-ng sur la machine 
+## Initialisation
+
+sudo apt update
+
+## Installer syslog-ng sur la machine 
 
 sudo apt install -y syslog-ng
 syslog-ng --version
 
-## 2 - Installer Elasticsearch
+## Installer Wazuh
 
-sudo apt update
+curl -sO https://packages.wazuh.com/4.13/wazuh-install.sh && sudo bash ./wazuh-install.sh -a
+
+Message d'infos :
+"
+INFO: --- Summary ---
+INFO: You can access the web interface https://<WAZUH_DASHBOARD_IP_ADDRESS>
+    User: admin
+    Password: <ADMIN_PASSWORD>
+INFO: Installation finished.
+"
+L'interface est accessible avec le lien et les credentials mentionnés dans INFO (URL à la place de <WAZUH_DASHBOARD_IP_ADDRESS> et mot de passe à la place de <ADMIN_PASSWORD>
+
+## Installer Elasticsearch
+
 sudo apt install -y openjdk-21-jdk
 
 wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg
 
 echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-8.x.list
 
-sudo apt update
 sudo apt install -y elasticsearch
 
-
-Vérifier et créer les dossiers de données et de logs
+## Vérifier et créer les dossiers de données et de logs
 
 sudo chown -R elasticsearch:elasticsearch /var/lib/elasticsearch
 sudo chown -R elasticsearch:elasticsearch /var/log/elasticsearch
