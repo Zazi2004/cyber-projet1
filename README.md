@@ -3,7 +3,7 @@ Système de détection d'anomalies et de gestion de logs pour la sécurité des 
 
 ## Configuration
 
-Une machine virtuelle Kali
+Une machine virtuelle Kali (minimum 4Gb de RAM, 2 Coeurs de processeur)
 
 ## Initialisation
 
