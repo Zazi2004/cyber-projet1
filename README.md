@@ -9,11 +9,51 @@ Une machine virtuelle Kali (minimum 4Gb de RAM, 2 Coeurs de processeur)
 
 sudo apt update
 
-## Installer syslog-ng sur la machine 
+## Installer et configurer syslog-ng sur la machine 
 
-sudo apt install -y syslog-ng
-syslog-ng --version
+sudo apt install -y syslog-ng  
+syslog-ng --version  
 
+Configuration :  
+  
+sudo nano /etc/syslog-ng/syslog-ng.conf  
+Effacer tout si du texte existe déjà, puis copier :
+  
+@version: 4.4  
+  
+options {  
+    chain_hostnames(off);  
+    flush_lines(0);  
+    use_dns(no);  
+    use_fqdn(no);  
+    owner("root");  
+    group("adm");  
+    perm(0640);  
+    stats_freq(0);  
+};  
+  
+source s_src {  
+    system();  
+    internal();  
+};  
+  
+destination d_wazuh {  
+    file("/var/log/syslog");  
+};  
+  
+log {  
+    source(s_src);  
+    destination(d_wazuh);  
+};  
+
+Exit (ctrl+X, Y, Enter)  
+
+sudo systemctl enable syslog-ng  
+sudo systemctl start syslog-ng  
+sudo systemctl status syslog-ng => Le statut devrait être "active"  
+
+Tous les logs de systemctl sont maintenant copiés dans le fichier /var/log/syslog  
+  
 ## Installer Wazuh
 
 curl -sO https://packages.wazuh.com/4.13/wazuh-install.sh && sudo bash ./wazuh-install.sh -a  
@@ -53,6 +93,19 @@ Pour éviter des problèmes de compatibilité antre agent et manager :
 sed -i "s/^deb/#deb/" /etc/apt/sources.list.d/wazuh.list  
 apt-get update  
 
+nano /var/ossec/etc/ossec.conf  
+  
+A la fin du fichier, juste avant la balise fermante </ossec_config>, ajouter :  
+  
+  <localfile>  
+    <log_format>syslog</log_format>  
+    <location>/var/log/syslog</location>  
+  </localfile>  
+
+Puis redémarrer l'agent Wazuh :  
+sudo systemctl restart wazuh-agent  
+  
+  
 ## Installer Elasticsearch
 
 sudo apt install -y openjdk-21-jdk
