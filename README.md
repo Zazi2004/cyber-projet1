@@ -95,13 +95,13 @@ apt-get update
 
 nano /var/ossec/etc/ossec.conf  
   
-A la fin du fichier, juste avant la balise fermante </ossec_config>, ajouter :  
+A la fin du fichier dans la dernière balise </ossec_config>, supprimer tous les <localfile> et les remplacer par :  
   
   <localfile>  
     <log_format>syslog</log_format>  
     <location>/var/log/syslog</location>  
   </localfile>  
-
+  
 Puis redémarrer l'agent Wazuh :  
 sudo systemctl restart wazuh-agent  
   
