@@ -118,47 +118,47 @@ sudo apt update
 sudo apt install elasticsearch
 
 ## Vérifier et créer les dossiers de données et de logs
-
-sudo chown -R elasticsearch:elasticsearch /var/lib/elasticsearch
-sudo chown -R elasticsearch:elasticsearch /var/log/elasticsearch
-ls -ld /var/lib/elasticsearch /var/log/elasticsearch
-
-Configuration initiale
-sudo nano /etc/elasticsearch/elasticsearch.yml
-
-Renommer sous le format suivant
-cluster.name: my-cluster
-node.name: node-1
-network.host: 0.0.0.0
-http.port: 9200
-
-xpack.security.enabled: false
-
-cluster.initial_master_nodes: ["node-1"]
-
-
-Si besoin ou erreur vérifier et corriger les keystores existants
-
-sudo -u elasticsearch /usr/share/elasticsearch/bin/elasticsearch-keystore list
-
-On remarque que certaines clés SSL sont présentes mais non utilisées car xpack.security.enabled: false.
-
-Si nécessaire, elles peuvent être supprimées après correction des permissions
-
-sudo chown -R elasticsearch:elasticsearch /etc/elasticsearch
-sudo -u elasticsearch /usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.http.ssl.keystore.secure_password
-sudo -u elasticsearch /usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.keystore.secure_password
-sudo -u elasticsearch /usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.truststore.secure_password
-
-Démarrer et activer Elasticsearch
-
-sudo systemctl daemon-reexec
-sudo systemctl enable elasticsearch
-sudo systemctl start elasticsearch
-sudo systemctl status elasticsearch -l
-
-
-Installer Kibana
+  
+sudo chown -R elasticsearch:elasticsearch /var/lib/elasticsearch  
+sudo chown -R elasticsearch:elasticsearch /var/log/elasticsearch  
+ls -ld /var/lib/elasticsearch /var/log/elasticsearch  
+  
+Configuration initiale  
+sudo nano /etc/elasticsearch/elasticsearch.yml  
+  
+Renommer sous le format suivant  
+cluster.name: my-cluster  
+node.name: node-1  
+network.host: 0.0.0.0  
+http.port: 9200  
+  
+xpack.security.enabled: false  
+  
+cluster.initial_master_nodes: ["node-1"]  
+  
+  
+Si besoin ou erreur vérifier et corriger les keystores existants  
+  
+sudo -u elasticsearch /usr/share/elasticsearch/bin/elasticsearch-keystore list  
+  
+On remarque que certaines clés SSL sont présentes mais non utilisées car xpack.security.enabled: false.  
+  
+Si nécessaire, elles peuvent être supprimées après correction des permissions  
+  
+sudo chown -R elasticsearch:elasticsearch /etc/elasticsearch  
+sudo -u elasticsearch /usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.http.ssl.keystore.secure_password  
+sudo -u elasticsearch /usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.keystore.secure_password  
+sudo -u elasticsearch /usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.truststore.secure_password  
+  
+Démarrer et activer Elasticsearch  
+  
+sudo systemctl daemon-reexec  
+sudo systemctl enable elasticsearch  
+sudo systemctl start elasticsearch  
+sudo systemctl status elasticsearch -l  
+  
+  
+## Installer Kibana
 
 sudo apt update
 sudo apt install -y kibana
