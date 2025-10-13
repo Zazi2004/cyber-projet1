@@ -114,7 +114,8 @@ wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearm
 
 echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-8.x.list
 
-sudo apt install -y elasticsearch
+sudo apt update
+sudo apt install elasticsearch
 
 ## Vérifier et créer les dossiers de données et de logs
 
