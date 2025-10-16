@@ -15,7 +15,10 @@ sudo apt install -y syslog-ng
 syslog-ng --version  
 
 Configuration :  
-  
+
+Céer le fichier si celui-ci n'est pas déjà dans le repertoir sinon passer à l'étape suivante
+sudo mkdir -p /etc/syslog-ng/conf.d
+
 sudo nano /etc/syslog-ng/syslog-ng.conf  
 Effacer tout si du texte existe déjà, puis copier :
   
