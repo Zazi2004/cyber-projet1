@@ -126,16 +126,16 @@ ls -ld /var/lib/elasticsearch /var/log/elasticsearch
 Configuration initiale  
 sudo nano /etc/elasticsearch/elasticsearch.yml  
   
-Renommer sous le format suivant  
-cluster.name: my-cluster  
+Remplacer tout le code déjà existant par :  
+  
+cluster.name: syslog-ng-cluster  
 node.name: node-1  
-network.host: 0.0.0.0  
+path.data: /var/lib/elasticsearch  
+path.logs: /var/log/elasticsearch  
+network.host: 127.0.0.1  
 http.port: 9200  
-  
-xpack.security.enabled: false  
-  
-cluster.initial_master_nodes: ["node-1"]  
-  
+discovery.type: single-node  
+bootstrap.memory_lock: false  
   
 Si besoin ou erreur vérifier et corriger les keystores existants  
   
