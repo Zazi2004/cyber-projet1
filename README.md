@@ -128,7 +128,7 @@ Dans la section Filebeat inputs, modifier les lignes de sorte à avoir :
     setup.template.name: "wazuh"
     setup.template.pattern: "wazuh-*"
 
-curl -O https://packages.wazuh.com/integrations/elastic/4.x-8.x/dashboards/wz-es-4.x-8.x-template.json
+curl -O https://packages.wazuh.com/integrations/elastic/4.x-8.x/dashboards/wz-es-4.x-8.x-template.json  
 curl -XPUT "localhost:9200/_template/wazuh" -H 'Content-Type: application/json' -d @wz-es-4.x-8.x-template.json
   
 ## Installer Elasticsearch
