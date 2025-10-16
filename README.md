@@ -93,9 +93,9 @@ Pour éviter des problèmes de compatibilité antre agent et manager :
 sed -i "s/^deb/#deb/" /etc/apt/sources.list.d/wazuh.list  
 apt-get update  
 
-nano /var/ossec/etc/ossec.conf  
+sudo nano /var/ossec/etc/ossec.conf  
   
-A la fin du fichier dans la dernière balise </ossec_config>, supprimer tous les <localfile> et les remplacer par :  
+A la fin du fichier dans la dernière balise </ossec_config>, supprimer tous les localfile et les remplacer par :  
   
   <localfile>  
     <log_format>syslog</log_format>  
