@@ -19,32 +19,32 @@ Configuration :
 sudo nano /etc/syslog-ng/syslog-ng.conf  
 Effacer tout si du texte existe déjà, puis copier :
   
-@version: 4.4  
+    @version: 4.4  
   
-options {  
-    chain_hostnames(off);  
-    flush_lines(0);  
-    use_dns(no);  
-    use_fqdn(no);  
-    owner("root");  
-    group("adm");  
-    perm(0640);  
-    stats_freq(0);  
-};  
-  
-source s_src {  
-    system();  
-    internal();  
-};  
-  
-destination d_wazuh {  
-    file("/var/log/syslog");  
-};  
-  
-log {  
-    source(s_src);  
-    destination(d_wazuh);  
-};  
+    options {  
+      chain_hostnames(off);  
+      flush_lines(0);  
+      use_dns(no);  
+      use_fqdn(no);  
+      owner("root");  
+      group("adm");  
+      perm(0640);  
+      stats_freq(0);  
+    };  
+    
+    source s_src {  
+      system();  
+      internal();  
+    };  
+    
+    destination d_wazuh {  
+      file("/var/log/syslog");  
+    };  
+      
+    log {  
+      source(s_src);  
+      destination(d_wazuh);  
+    };  
 
 Exit (ctrl+X, Y, Enter)  
 
@@ -95,12 +95,12 @@ apt-get update
 
 sudo nano /var/ossec/etc/ossec.conf  
   
-A la fin du fichier dans la dernière balise </ossec_config>, supprimer tous les localfile et les remplacer par :  
+A la fin du fichier dans la dernière balise ossec_config, supprimer tous les localfile et les remplacer par :  
   
-  <localfile>  
-    <log_format>syslog</log_format>  
-    <location>/var/log/syslog</location>  
-  </localfile>  
+    <localfile>  
+      <log_format>syslog</log_format>  
+      <location>/var/log/syslog</location>  
+    </localfile>  
   
 Puis redémarrer l'agent Wazuh :  
 sudo systemctl restart wazuh-agent  
