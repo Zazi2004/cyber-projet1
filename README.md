@@ -105,6 +105,31 @@ A la fin du fichier dans la dernière balise ossec_config, supprimer tous les lo
 Puis redémarrer l'agent Wazuh :  
 sudo systemctl restart wazuh-agent  
   
+## Installer et configurer Filebeat pour transmettre les alertes générées par Wazuh
+
+Filebeat est probablement déjà installé par défaut sur Kali, il peut être utile de le mettre à jour pour s'assurer de la compatibilité avec Elasticsearch
+  
+curl -fsSL https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elastic-keyring.gpg  
+echo "deb [signed-by=/usr/share/keyrings/elastic-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee /etc/apt/sources.list.d/  elastic-8.x.list  
+sudo apt update  
+sudo apt install filebeat  
+  
+sudo nano /etc/filebeat/filebeat.yml  
+
+Dans la section Filebeat inputs, modifier les lignes de sorte à avoir :  
+
+    - type: log
+      id: my-filestream-id
+      enabled: true
+      paths:
+        - /var/ossec/logs/alerts/alerts.json
+        
+    setup.template.enabled: true
+    setup.template.name: "wazuh"
+    setup.template.pattern: "wazuh-*"
+
+curl -O https://packages.wazuh.com/integrations/elastic/4.x-8.x/dashboards/wz-es-4.x-8.x-template.json
+curl -XPUT "localhost:9200/_template/wazuh" -H 'Content-Type: application/json' -d @wz-es-4.x-8.x-template.json
   
 ## Installer Elasticsearch
 
@@ -121,7 +146,8 @@ sudo apt install elasticsearch
   
 sudo chown -R elasticsearch:elasticsearch /var/lib/elasticsearch  
 sudo chown -R elasticsearch:elasticsearch /var/log/elasticsearch  
-ls -ld /var/lib/elasticsearch /var/log/elasticsearch  
+sudo chown -R elasticsearch:elasticsearch /etc/elasticsearch  
+ls -ld /var/lib/elasticsearch /var/log/elasticsearch /etc/elasticsearch    
   
 Configuration initiale  
 sudo nano /etc/elasticsearch/elasticsearch.yml  
