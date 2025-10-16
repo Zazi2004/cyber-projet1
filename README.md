@@ -105,6 +105,17 @@ A la fin du fichier dans la dernière balise ossec_config, supprimer tous les lo
 Puis redémarrer l'agent Wazuh :  
 sudo systemctl restart wazuh-agent  
   
+## Installer Elasticsearch
+
+sudo apt install -y openjdk-21-jdk
+
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-8.x.list
+
+sudo apt update
+sudo apt install elasticsearch  
+  
 ## Installer et configurer Filebeat pour transmettre les alertes générées par Wazuh
 
 Filebeat est probablement déjà installé par défaut sur Kali, il peut être utile de le mettre à jour pour s'assurer de la compatibilité avec Elasticsearch
@@ -127,21 +138,10 @@ Dans la section Filebeat inputs, modifier les lignes de sorte à avoir :
     setup.template.enabled: true
     setup.template.name: "wazuh"
     setup.template.pattern: "wazuh-*"
-
-curl -O https://packages.wazuh.com/integrations/elastic/4.x-8.x/dashboards/wz-es-4.x-8.x-template.json  
-curl -XPUT "localhost:9200/_template/wazuh" -H 'Content-Type: application/json' -d @wz-es-4.x-8.x-template.json
   
-## Installer Elasticsearch
-
-sudo apt install -y openjdk-21-jdk
-
-wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg
-
-echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-8.x.list
-
-sudo apt update
-sudo apt install elasticsearch
-
+curl -O https://packages.wazuh.com/integrations/elastic/4.x-8.x/dashboards/wz-es-4.x-8.x-template.json  
+curl -XPUT "localhost:9200/_template/wazuh" -H 'Content-Type: application/json' -d @wz-es-4.x-8.x-template.json  
+  
 ## Vérifier et créer les dossiers de données et de logs
   
 sudo chown -R elasticsearch:elasticsearch /var/lib/elasticsearch  
