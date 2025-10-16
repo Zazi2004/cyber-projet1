@@ -16,7 +16,7 @@ syslog-ng --version
 
 Configuration :  
 
-Céer le fichier si celui-ci n'est pas déjà dans le repertoir sinon passer à l'étape suivante
+Céer le fichier si celui-ci n'est pas déjà dans le repertoir sinon passer à l'étape suivante:
 sudo mkdir -p /etc/syslog-ng/conf.d
 
 sudo nano /etc/syslog-ng/syslog-ng.conf  
