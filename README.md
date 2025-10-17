@@ -136,14 +136,14 @@ sudo nano /etc/elasticsearch/elasticsearch.yml
   
 Remplacer tout le code déjà existant par :  
   
-cluster.name: syslog-ng-cluster  
-node.name: node-1  
-path.data: /var/lib/elasticsearch  
-path.logs: /var/log/elasticsearch  
-network.host: 127.0.0.1  
-http.port: 9200  
-discovery.type: single-node  
-bootstrap.memory_lock: false  
+    cluster.name: syslog-ng-cluster
+    node.name: node-1
+    path.data: /var/lib/elasticsearch
+    path.logs: /var/log/elasticsearch
+    network.host: 127.0.0.1
+    http.port: 9200
+    discovery.type: single-node
+    bootstrap.memory_lock: false
   
 Si besoin ou erreur vérifier et corriger les keystores existants  
   
