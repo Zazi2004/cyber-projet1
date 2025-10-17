@@ -22,32 +22,32 @@ sudo mkdir -p /etc/syslog-ng/conf.d
 sudo nano /etc/syslog-ng/syslog-ng.conf  
 Effacer tout si du texte existe déjà, puis copier :
   
-    @version: 4.4  
+    @version: 4.4
   
-    options {  
-      chain_hostnames(off);  
-      flush_lines(0);  
-      use_dns(no);  
-      use_fqdn(no);  
-      owner("root");  
-      group("adm");  
-      perm(0640);  
-      stats_freq(0);  
-    };  
+    options {
+      chain_hostnames(off);
+      flush_lines(0);
+      use_dns(no);
+      use_fqdn(no);
+      owner("root");
+      group("adm");
+      perm(0640);
+      stats_freq(0);
+    };
     
-    source s_src {  
-      system();  
-      internal();  
-    };  
+    source s_src {
+      system();
+      internal();
+    };
     
-    destination d_wazuh {  
-      file("/var/log/syslog");  
-    };  
-      
-    log {  
-      source(s_src);  
-      destination(d_wazuh);  
-    };  
+    destination d_wazuh {
+      file("/var/log/syslog");
+    };
+    
+    log {
+      source(s_src);
+      destination(d_wazuh);
+    };
 
 Exit (ctrl+X, Y, Enter)  
 
@@ -85,7 +85,7 @@ Ajout et mise à jour du repo
 echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | tee -a /etc/apt/sources.list.d/wazuh.list  
 apt-get update  
   
-WAZUH_MANAGER="<adresse IP de la machine>" apt-get install wazuh-agent  
+WAZUH_MANAGER="adresse IP de la machine" apt-get install wazuh-agent  
   
 Lancer le service :  
 systemctl daemon-reload  
