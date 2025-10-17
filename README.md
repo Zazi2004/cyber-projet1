@@ -70,7 +70,7 @@ INFO: You can access the web interface https://<WAZUH_DASHBOARD_IP_ADDRESS>
 INFO: Installation finished.  
 "  
 L'interface est accessible en se connectant au port ouvert (généralement 443) de de la machine => https://localhost:443/  
-Un message d'alerte s'affiche avant d'accéder à la page => Advanced => Take the risk
+Un message d'alerte s'affiche avant d'accéder à la page => Advanced => Accept the risk and continue
 Username : admin, et Password renseigné à la place de <ADMIN_PASSWORD>
 
 ## Déployer l'agent Wazuh
