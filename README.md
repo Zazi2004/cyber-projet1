@@ -85,8 +85,13 @@ Ajout et mise à jour du repo
 echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | tee -a /etc/apt/sources.list.d/wazuh.list  
 apt-get update  
   
-WAZUH_MANAGER="adresse IP de la machine" apt-get install wazuh-agent  
+WAZUH_MANAGER="adresse IPv4 de la machine" apt-get install wazuh-agent  
+Pour récupérer l'adresse IP de la machine :  
+ifconfig => prendre l'adresse au masque 255.255.255.0    
   
+Il est possible que cette étape coince car /var/ossec/etc/shared/default/ ne soit pas vide. Dans ce cas :  
+rm /var/ossec/etc/shared/default/merged.mg.save ou tout autre fichier  
+    
 Lancer le service :  
 systemctl daemon-reload  
 systemctl enable wazuh-agent  
