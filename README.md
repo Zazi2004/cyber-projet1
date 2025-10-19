@@ -275,10 +275,10 @@ Ce code est vulnérable à l'injection de commande car il manque une validation 
 
 L'agent doit surveiller le fichier access.log. Vérifier si dans la configuration par défaut la commande est présente, sinon l'ajouter
 
-<localfile>
-   <log_format>apache</log_format>
-   <location>/var/log/apache2/access.log</location>
-</localfile>
+    <localfile> 
+      <log_format>firewall-drop</log_format>
+      <location> /var/log/apache2/access.log </location>
+    </localfile>
 
 redémarrer l'agent si modification du fichier 
 
@@ -294,3 +294,7 @@ web (souvent www-data)
 On peut aussi se diriger vers events, on peut constater des logs comme :
 Generic web attack: Command injection attempt
 Command Injection detected in GET parameters
+
+### Attaque modification de l'intégrité des fichiers
+
+
