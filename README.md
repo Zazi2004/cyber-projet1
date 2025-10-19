@@ -220,3 +220,53 @@ Les valeurs "kali", "passwordlist.lst" et "localhost" correspondent à la prése
 
 Après avoir exécuté la commande Hydra, une alerte de niveau 10 et d'id 5763 "sshd: brute force trying to get access to the system. Authentication failed." devrait apparaitre dans les logs de Wazuh.
 L'attaque étant réalisée en local sur la même machine virtuelle, l'IP 127.0.0.1 ne peut pas être autobloqué. La réponse de firewall se fait donc si l'attaque vient d'une autre adresse ip.
+
+### Attaque injection de commande
+
+Contrairement à la force brute (qui cible l'authentification d'un service), l'injection de commandes cible directement les applications web. C'est crucial car la majorité des brèches de sécurité découlent d'une exploitation au niveau d’une faille de sécurité de l'application
+
+#### Installer le serveur web apache et PHP
+
+sudo apt install apache2 php libapache2-mod-php –y
+
+#### Vérifier le statut du service
+
+sudo systemctl status apache2
+
+le statut doit être active (running)
+
+#### Créer l'application web Vulnérable
+
+##### Naviguer vers le répértoire web
+
+cd /var/www/html/
+
+##### Création du fichier diagnostic.php
+
+sudo nano diagnostic.php
+
+```php
+<?php
+// diagnostic.php - Application cible VULNÉRABLE à l'injection de commandes
+echo "<h1>Outil de Diagnostic Réseau VULNÉRABLE (Command Injection Lab)</h1>";
+if (isset($_GET['host'])) {
+ $host = $_GET['host'];
+ // --- POINT DE VULNÉRABILITÉ CRITIQUE ---
+ // L'entrée utilisateur ($host) est insérée directement dans la commande.
+ $command = 'ping -c 4 ' . $host;
+ $output = shell_exec($command);
+ echo "<h2>Résultat du Ping pour : " . htmlspecialchars($host) . "</h2>";
+ echo "<pre>";
+ if ($output === null) {
+ echo "Erreur d'exécution de la commande ou aucune sortie.";
+ } else {
+ echo $output;
+ }
+ echo "</pre>";
+} else {
+ echo "<p>Veuillez fournir un nom d'hôte ou une adresse IP dans l'URL.</p>";
+}
+?>
+```
+
+Ce code est vulnérable à l'injection de commande car il manque une validation et un nettoyage appropriés de l'entrée utilisateur avant de l'exécuter dans une fonction système
