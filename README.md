@@ -1,4 +1,4 @@
-  # Projet : Système de Détection d'Anomalies et de Gestion de Logs
+# Projet : Système de Détection d'Anomalies et de Gestion de Logs
 
 Système de détection d'anomalies et de gestion de logs pour la sécurité des réseaux
 
@@ -8,6 +8,16 @@ Système de détection d'anomalies et de gestion de logs pour la sécurité des 
 - RAM : 4096 MB minimum
 - CPU : 2 cœurs
 - Disque : 50 GB minimum
+
+## Architecture
+
+**Collecte des logs** : syslog-ng
+      |
+**Détection d'anomalies** : Wazuh Manager + agent 000 intégré
+      |
+**Gestion des logs** : Wazuh indexer - stockage et indexation
+      |
+**Visualisation des logs** : Wazuh Dashboard - accès par https://localhost
 
 ## Mise en place du système
 
