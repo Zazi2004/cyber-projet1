@@ -17,13 +17,13 @@ Système de détection d'anomalies et de gestion de logs pour la sécurité des 
 
 ## Architecture
 
-**Collecte des logs** : syslog-ng
-      |
-**Détection d'anomalies** : Wazuh Manager + agent 000 intégré
-      |
-**Gestion des logs** : Wazuh indexer - stockage et indexation
-      |
-**Visualisation des logs** : Wazuh Dashboard - accès par https://localhost
+**Collecte des logs** : syslog-ng  
+      |  
+**Détection d'anomalies** : Wazuh Manager + agent 000 intégré  
+      |  
+**Gestion des logs** : Wazuh indexer - stockage et indexation  
+      |  
+**Visualisation des logs** : Wazuh Dashboard - accès par https://localhost  
 
 ## Mise en place du système
 
