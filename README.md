@@ -184,6 +184,7 @@ touch passwordlist.lst
 sudo nano passwordlist.lst
 
 list exemple de dix mots de passe erronnés :
+
     password123
     123456
     12345678
