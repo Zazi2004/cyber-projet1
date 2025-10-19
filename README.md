@@ -270,3 +270,27 @@ if (isset($_GET['host'])) {
 ```
 
 Ce code est vulnérable à l'injection de commande car il manque une validation et un nettoyage appropriés de l'entrée utilisateur avant de l'exécuter dans une fonction système
+
+#### Configuration de la surveillance des Logs Apache
+
+L'agent doit surveiller le fichier access.log. Vérifier si dans la configuration par défaut la commande est présente, sinon l'ajouter
+
+<localfile>
+   <log_format>apache</log_format>
+   <location>/var/log/apache2/access.log</location>
+</localfile>
+
+redémarrer l'agent si modification du fichier 
+
+sudo systemctl restart wazuh-agent
+
+#### Lancement de l'attaque injection de commande
+
+http://[IP_DE_LA_CIBLE]/diagnostic.php?host=127.0.0.1;whoami
+
+La page web doit afficher le résultat du ping, immédiatement suivi par le nom d'utilisateur du serveur
+web (souvent www-data)
+
+On peut aussi se diriger vers events, on peut constater des logs comme :
+Generic web attack: Command injection attempt
+Command Injection detected in GET parameters
