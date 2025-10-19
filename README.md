@@ -297,4 +297,33 @@ Command Injection detected in GET parameters
 
 ### Attaque modification de l'intégrité des fichiers
 
+Cette attaque met en évidence un aspect crucial de la sécurité des serveurs : lapersistance post-exploitation et la détection comportementale.
 
+#### definir la sequence de scan
+
+    <syscheck> 
+      <frequency>3600</frequency>
+    </syscheck>
+
+#### Ajouter les répertoires à Surveiller
+
+la balise <directories> pour ajouter les chemins de fichiers ou de répertoires
+ 
+    <syscheck> 
+      <directories check_all= "yes">/etc/hosts</directories>
+      <directories check_all= "yes"> /etc/ssh/sshd_config </directories>
+    </syscheck>
+
+l'option check_all=yes garantit que l'agent vérifie le hachage, les permissions, l'utilisateur et le groupe
+
+sudo systemctl restart wazuh-agent
+
+#### Lancer l'attaque File Tampering
+
+On modifie le fichier /etc/hosts en simulant l'ajout d'une ligne par l'attaquant 
+
+sudo echo "10.0.0.100 malicious.example.com" >> /etc/hosts
+
+L’analyse de wazuh detecte les alertes suivantes :
+Integrity checksum changed for file
+File modified - higher severity
