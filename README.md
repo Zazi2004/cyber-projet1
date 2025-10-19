@@ -183,7 +183,7 @@ Créer une liste de mots de passe et la remplir :
 touch passwordlist.lst
 sudo nano passwordlist.lst
 
-list exemple de dix mots de passe erronnés :
+list exemple de dix mots de passe erronés :
 
     password123
     123456
