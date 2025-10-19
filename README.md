@@ -2,11 +2,11 @@
 
 Système de détection d'anomalies et de gestion de logs pour la sécurité des réseaux
 
-[Configuration requise](#configuration-requise)
-[Architecture](#architecture)
-[Mise en place du système](#mise-en-place-du-système)
-[Accès au Dashboard](#accès-au-dashboard)
-[Scénarios d'attaque](#scénarios-dattaque)
+[Configuration requise](#configuration-requise)  
+[Architecture](#architecture)  
+[Mise en place du système](#mise-en-place-du-système)  
+[Accès au Dashboard](#accès-au-dashboard)  
+[Scénarios d'attaque](#scénarios-dattaque)  
 
 ## Configuration requise
 
