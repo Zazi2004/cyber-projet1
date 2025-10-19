@@ -297,7 +297,7 @@ Command Injection detected in GET parameters
 
 ### Attaque modification de l'intégrité des fichiers
 
-Cette attaque met en évidence un aspect crucial de la sécurité des serveurs : lapersistance post-exploitation et la détection comportementale.
+Cette attaque met en évidence un aspect crucial de la sécurité des serveurs : la persistance post-exploitation et la détection comportementale.
 
 #### definir la sequence de scan
 
