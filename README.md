@@ -1,4 +1,4 @@
-# Projet : Système de Détection d'Anomalies et de Gestion de Logs
+  # Projet : Système de Détection d'Anomalies et de Gestion de Logs
 
 Système de détection d'anomalies et de gestion de logs pour la sécurité des réseaux
 
@@ -135,3 +135,71 @@ Les détails comportent le temps de capture de l'événement, le nom de l'agent 
 Il est égalemnet possible d'ajouter des filtre pour consulter plus facilement ce qui nous intéresse, notamment pour les scénarios d'attaque.
 
 ## Scénarios d'attaque
+
+### Attaque bruteforce SSH
+
+L’attaque par brute force ssh est l’une des menaces les plus répandues puisque la plupart des machines et serveurs sont reliés à internet. SSH est la principale méthode d'accès à distance et d'administration des serveurs Linux/Unix. Un attaquant qui réussit cette attaque obtient un accès complet au système.
+
+#### Installation et démarrage du serveur ssh
+
+sudo apt install openssh-server -y
+sudo systemctl enable ssh
+sudo systemctl start ssh
+
+#### Configurer wazuh-manager
+
+sudo nano /var/ossec/etc/ossec.conf
+
+Vérifier que la commande suivante est bien présente, sinon l'ajouter :
+
+    <command> 
+      <name>firewall-drop</name>
+      <executable> firewall-drop </executable>
+      <timeout_allowed>yes</timeout_allowed>
+    </command>
+
+Ajouter la règle de réponse à la fin du fichier :
+
+    <ossec_config>
+      <active-response>
+        <disabled>no</disabled>
+        <command>firewall-drop</command>
+        <location>local</location>
+        <rules_id>5763</rules_id>
+        <timeout>180</timeout>
+      </active-response>
+    </ossec_config>
+
+On va utiliser la commande firewall-drop définie avant, qui va être utilisé en local, avec un numéro de règle 5736, et la durée de mitigation est de 3 min.
+
+sudo systemctl restart wazuh-manager
+
+#### Lancer le script d'attaque avec Hydra
+
+sudo apt install –y –hydra
+
+Créer une liste de mots de passe et la remplir :
+
+touch passwordlist.lst
+sudo nano passwordlist.lst
+
+list exemple de dix mots de passe erronnés :
+    password123
+    123456
+    12345678
+    letmein
+    canyouletmein
+    password
+    catsanddogs
+    michael
+    jackson
+    azerty
+
+Lancer la commande hydra :
+
+sudo hydra -t 4 -l kali -P passwordlist.lst localhost ssh
+
+Les valeurs "kali", "passwordlist.lst" et "localhost" correspondent à la présente configuration, mais il faut les adapter en fonction de ce qui a été réalisé auparavant. Le nom d'utilisateur "kali" correspond à celui par défaut sur une machine virtuelle préinstallée.
+
+Après avoir exécuté la commande Hydra, une alerte de niveau 10 et d'id 5763 "sshd: brute force trying to get access to the system. Authentication failed." devrait apparaitre dans les logs de Wazuh.
+L'attaque étant réalisée en local sur la même machine virtuelle, l'IP 127.0.0.1 ne peut pas être autobloqué. La réponse de firewall se fait donc si l'attaque vient d'une autre adresse ip.
