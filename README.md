@@ -392,6 +392,37 @@ whoami => "root"
 
 Une alerte d'id 100100 et de niveau 12 doit apparaître dans les logs de Wazuh : "Escalade privilèges : find exécuté en root".
 
+
+### Exécution de script malveillant
+
+Simuler le dépôt puis l’exécution d’un script potentiellement malveillant dans /tmp. L’action écrit dans /tmp et génère une entrée syslog via logger afin que l’agent Wazuh voit l’événement.
+
+#### Déposer et exécuter le script
+
+Créer le script dans
+
+cat > /tmp/malware.sh <<'EOF'
+#!/bin/bash
+echo "Malware simulation executed on $(date) by $(whoami)" >> /tmp/malware.log
+logger -t MALWARE_SIM "Execution of /tmp/malware.sh by $(whoami)"
+EOF
+
+Rendre exécutable et exécuter
+chmod +x /tmp/malware.sh
+bash /tmp/malware.sh
+
+### Pour vérifier l'exécution faire les commandes
+
+ls -l /tmp/malware.sh /tmp/malware.log
+cat /tmp/malware.log
+
+sudo grep MALWARE_SIM /var/log/syslog -n || sudo tail -n 50 /var/log/syslog
+
+### Nettoyage
+
+rm -f /tmp/malware.sh /tmp/malware.log
+sudo grep MALWARE_SIM /var/log/syslog -n || true
+
 ## Analyse et conclusion
 
 Wazuh est un outil puissant qui permet d'identifier efficacement et de trier les événements se passant sur un ou plusieurs endpoints du réseau.
