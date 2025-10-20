@@ -333,3 +333,24 @@ sudo echo "10.0.0.100 malicious.example.com" >> /etc/hosts
 L’analyse de wazuh detecte les alertes suivantes :
 Integrity checksum changed for file
 File modified - higher severity
+
+### Scan de ports avec Nmap
+
+#### Installer Nmap
+sudo apt update
+sudo apt install -y nmap
+
+#### Scans rapide
+sudo nmap -sS -T4 127.0.0.1 (Scan simple pour avoir quelques ports)
+
+sudo nmap --top-ports 30 127.0.0.1 (Scan les ports les plus courants utilisé) 
+
+sudo nmap -p 1-65535 localhost (Scan tout les ports attention ça peut prendre du temps)
+
+#### Ensuite possiblité d'avoir différentes forme de sortie 
+
+sudo nmap -sS -T4 -oN scan-local.txt 127.0.0.1 (Sortie lisible)
+
+sudo nmap -sS -T4 -oX scan-local.xml 127.0.0.1 (Sortie XML)
+
+
