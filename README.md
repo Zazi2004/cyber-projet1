@@ -148,6 +148,9 @@ Le dashboard réalise une synthèse du nombre d'alertes par niveau et par type d
 La section Events permet de consulter toutes les alertes générées par l'agent.
 Les détails comportent le temps de capture de l'événement, le nom de l'agent (ici Kali par défaut), la description de l'incident, le niveau d'alerte et l'identifiant de la règle concernée.
 
+<img width="100%" alt="image" src="https://github.com/user-attachments/assets/d668d4a4-fadd-4fa7-b58d-e8cbf7ec40cc" />
+
+
 Il est égalemnet possible d'ajouter des filtre pour consulter plus facilement ce qui nous intéresse, notamment pour les scénarios d'attaque.
 
 ## Scénarios d'attaque
@@ -220,6 +223,9 @@ Les valeurs "kali", "passwordlist.lst" et "localhost" correspondent à la prése
 
 Après avoir exécuté la commande Hydra, une alerte de niveau 10 et d'id 5763 "sshd: brute force trying to get access to the system. Authentication failed." devrait apparaitre dans les logs de Wazuh.
 L'attaque étant réalisée en local sur la même machine virtuelle, l'IP 127.0.0.1 ne peut pas être autobloqué. La réponse de firewall se fait donc si l'attaque vient d'une autre adresse ip.
+
+<img width="100%" alt="image" src="https://github.com/user-attachments/assets/1392fe0e-c3a7-4544-b494-2938b41e37e7" />
+
 
 ### Attaque injection de commande
 
