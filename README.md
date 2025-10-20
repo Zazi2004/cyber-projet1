@@ -7,6 +7,7 @@ Système de détection d'anomalies et de gestion de logs pour la sécurité des 
 [Mise en place du système](#mise-en-place-du-système)  
 [Accès au Dashboard](#accès-au-dashboard)  
 [Scénarios d'attaque](#scénarios-dattaque)  
+[Analyse et conclusion](#analyse-et-conclusion)  
 
 ## Configuration requise
 
@@ -334,23 +335,70 @@ L’analyse de wazuh detecte les alertes suivantes :
 Integrity checksum changed for file
 File modified - higher severity
 
-### Scan de ports avec Nmap
+### Escalade de privilèges
 
-#### Installer Nmap
-sudo apt update
-sudo apt install -y nmap
+#### Créer un utilisateur avec sudo permissif
 
-#### Scans rapide
-sudo nmap -sS -T4 127.0.0.1 (Scan simple pour avoir quelques ports)
+sudo useradd -m utilisateur && sudo passwd utilisateur
+echo "utilisateur ALL=(ALL) NOPASSWD: /usr/bin/find" | sudo tee -a /etc/sudoers
 
-sudo nmap --top-ports 30 127.0.0.1 (Scan les ports les plus courants utilisé) 
+#### Installer et configurer Auditd avec Wazuh
 
-sudo nmap -p 1-65535 localhost (Scan tout les ports attention ça peut prendre du temps)
+sudo apt install auditd -y
 
-#### Ensuite possiblité d'avoir différentes forme de sortie 
+sudo bash -c 'cat >> /etc/audit/audit.rules << EOF
+-a exit,always -F euid=0 -F arch=b64 -S execve -k root_commands
+-w /etc/passwd -p wa -k passwd_changes
+-w /etc/shadow -p r -k shadow_access
+EOF'
+sudo auditctl -R /etc/audit/audit.rules
 
-sudo nmap -sS -T4 -oN scan-local.txt 127.0.0.1 (Sortie lisible)
+sudo bash -c 'cat >> /var/ossec/etc/ossec.conf << EOF
+<localfile>
+  <log_format>audit</log_format>
+  <location>/var/log/audit/audit.log</location>
+</localfile>
+EOF'
 
-sudo nmap -sS -T4 -oX scan-local.xml 127.0.0.1 (Sortie XML)
+sudo bash -c 'cat >> /var/ossec/etc/rules/local_rules.xml << EOF
+<group name="privilege_escalation,">
+  <rule id="100100" level="12">
+    <if_sid>80792</if_sid>
+    <field name="audit.command">find</field>
+    <field name="audit.euid">0</field>
+    <description>Escalade privilèges : find exécuté en root</description>
+  </rule>
+  <rule id="100101" level="14">
+    <if_sid>80790</if_sid>
+    <field name="audit.file.name">/etc/shadow</field>
+    <description>Accès suspect au fichier shadow</description>
+  </rule>
+  <rule id="100102" level="15">
+    <if_sid>80790</if_sid>
+    <field name="audit.file.name">/etc/passwd</field>
+    <match>write</match>
+    <description>Modification du fichier passwd</description>
+  </rule>
+</group>
+EOF'
 
+sudo systemctl restart wazuh-manager
 
+#### Exploitation
+
+su - utilisateur
+sudo find /tmp -exec /bin/bash \;
+whoami => "root"
+
+Une alerte d'id 100100 et de niveau 12 doit apparaître dans les logs de Wazuh : "Escalade privilèges : find exécuté en root".
+
+## Analyse et conclusion
+
+Wazuh est un outil puissant qui permet d'identifier efficacement et de trier les événements se passant sur un ou plusieurs endpoints du réseau.
+
+Le principal problème de cette installation est qu'il concerne un endpoint local sur une machine virtuelle, et non sur un réseau réel avec différents endpoints. Une vraie amélioration de ce système serait le passage sur une vraie machine qui pourrait intéragir avec plusieurs autres hôtes.
+On pourrait également déployer d'autres agents sur d'autres machines pour une meilleure surveillance de l'ensemble du réseau.
+
+La création d'envoi d'alertes automatique si elles dépassent le niveau 12, et un feed temps réel (sans besoin de rafraîchir la page Wazuh) peuvent augmenter la réactivité du système.
+
+L'outil Wazuh permet également de définir des règles et mettre en place des réponses pour des alertes. En ajouter permettrait de profiter pleinement du potentiel IPS de ce système.
